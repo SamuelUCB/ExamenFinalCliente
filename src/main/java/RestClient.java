@@ -38,6 +38,8 @@ public class RestClient {
                 Float latitude = rand.nextFloat()*7+3;
                 Float longitude = rand.nextFloat()*10+5;
                 Integer calories =rand.nextInt(20)+5;
+                Integer cantidadEscalera = Math.abs(rand.nextInt()%2100) - 100;
+                Integer tipo = Math.abs(rand.nextInt()%2);
                 Date fecha = getFechaEntreAyerYHoy();
                 Calendar calendar = new GregorianCalendar();
                 calendar.setTime(fecha);
@@ -58,8 +60,10 @@ public class RestClient {
                 postParameters.add(new BasicNameValuePair("longitude", longitude.toString()));
                 postParameters.add(new BasicNameValuePair("calories", calories.toString()));
                 postParameters.add(new BasicNameValuePair("fecha_evento", fecha_evento));
-                postParameters.add(new BasicNameValuePair("user", "2"));
+                postParameters.add(new BasicNameValuePair("user", "1"));
                 postParameters.add(new BasicNameValuePair("intensidad", intensidad));
+                postParameters.add(new BasicNameValuePair("cantidad", cantidadEscalera.toString()));
+                postParameters.add(new BasicNameValuePair("tipo", tipo.toString()));
 
                 postRequest.setEntity(new UrlEncodedFormEntity(postParameters));
                 postRequest.addHeader("accept", "application/json");

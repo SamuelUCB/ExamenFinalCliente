@@ -33,7 +33,7 @@ public class RestClient {
                 Random rand = new Random();
 
                 Integer  step = rand.nextInt(50) + 1;
-                Integer bpms = rand.nextInt(39)+52;
+                Integer bpms = 39 + rand.nextInt(250 - 39 + 1); // Genera valores entre 39 y 250
                 Integer distances = rand.nextInt(4)+1;
                 Float latitude = rand.nextFloat()*7+3;
                 Float longitude = rand.nextFloat()*10+5;
@@ -41,9 +41,15 @@ public class RestClient {
                 Date fecha = getFechaEntreAyerYHoy();
                 Calendar calendar = new GregorianCalendar();
                 calendar.setTime(fecha);
-                String fecha_registro = calendar.get(Calendar.YEAR) + "/" + (calendar.get(Calendar.MONTH) + 1) + "/" +
-                                        calendar.get(Calendar.DAY_OF_MONTH) + " " + calendar.get(Calendar.HOUR_OF_DAY) + ":" +
-                                        calendar.get(Calendar.MINUTE) + ":" + calendar.get(Calendar.SECOND);
+                String fecha_evento = calendar.get(Calendar.YEAR) + "/" + (calendar.get(Calendar.MONTH) + 1) + "/" +
+                                      calendar.get(Calendar.DAY_OF_MONTH) + " " + calendar.get(Calendar.HOUR_OF_DAY) + ":" +
+                                      calendar.get(Calendar.MINUTE) + ":" + calendar.get(Calendar.SECOND);
+                String intensidad = "media";
+                if ((bpms >= 60) && (bpms <= 89)) {
+                    intensidad = "baja";
+                } else if ((bpms >= 141) && (bpms <= 220)) {
+                    intensidad = "alta";
+                }
 
                 postParameters.add(new BasicNameValuePair("steps",step.toString()));
                 postParameters.add(new BasicNameValuePair("bpm", bpms.toString()));
@@ -51,8 +57,9 @@ public class RestClient {
                 postParameters.add(new BasicNameValuePair("latitude", latitude.toString()));
                 postParameters.add(new BasicNameValuePair("longitude", longitude.toString()));
                 postParameters.add(new BasicNameValuePair("calories", calories.toString()));
-                postParameters.add(new BasicNameValuePair("fecha_registro", fecha_registro));
+                postParameters.add(new BasicNameValuePair("fecha_evento", fecha_evento));
                 postParameters.add(new BasicNameValuePair("user", "2"));
+                postParameters.add(new BasicNameValuePair("intensidad", intensidad));
 
                 postRequest.setEntity(new UrlEncodedFormEntity(postParameters));
                 postRequest.addHeader("accept", "application/json");
